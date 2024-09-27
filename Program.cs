@@ -6,7 +6,7 @@
         {
             int numberOfDices = 0;
 
-            while (numberOfDices < 3 || numberOfDices > 10) 
+            while (numberOfDices < 3 || numberOfDices > 10)
             {
                 Console.WriteLine("Ile kostek chcesz rzucić (3 - 10)");
 
@@ -25,13 +25,24 @@
             Random random = new Random();
             for (int i = 0; i < numberOfDices; i++)
             {
-                drawnDiceNumbers.Add(random.Next(1,7));
+                drawnDiceNumbers.Add(random.Next(1, 7));
             }
 
-            foreach (int number in drawnDiceNumbers)
+            for (int i = 0; i < drawnDiceNumbers.Count; i++)
             {
-
+                Console.WriteLine("Kostka " + (i+1) + ": " + drawnDiceNumbers[i]);
             }
+
+
+            int score = 0;
+            if(drawnDiceNumbers.Distinct().Count() < numberOfDices) 
+            {
+                foreach(int points  in drawnDiceNumbers) 
+                {
+                    score += points;
+                }
+            }
+            Console.WriteLine(score);
         }
     }
 }
