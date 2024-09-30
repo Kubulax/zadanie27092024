@@ -82,18 +82,20 @@
                 var answer = String.Empty;
                 while(answer != "t" || answer != "n")
                 {
-
-                    Console.WriteLine("Jeszcze raz? (t/n)");
-                    answer = Console.ReadLine();
-
-                    if(answer == "t")
+                    if (answer == "t")
                     {
                         playAgain = true;
+                        break;
                     }
-                    else
+                    
+                    if (answer == "n")
                     {
                         playAgain = false;
-                    }   
+                        break;
+                    }
+
+                    Console.WriteLine("Jeszcze raz? (t/n)");
+                    answer = Console.ReadLine();       
                 }
             }
         }
