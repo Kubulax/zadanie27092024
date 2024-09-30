@@ -2,24 +2,15 @@
 {
     internal class Program
     {
-        static void Main(string[] args)
+        /************************************************
+            nazwa: DrawNumbers
+            opis: Funkcja losuje liczby z zakresu 1 - 6 w ilości podanej w parametrze numberOfDices funkcji.
+            parametry: numberOfDices - zmienna typu int przechowywująca inforamcje o ilości liczb do wylosowania.
+            zwracany typ i opis: List<int> (lista losowych liczb od 1 - 6 w ilości podanej jako parametr funkcji).
+            autor: PESEL
+        *************************************************/
+        static List<int> DrawNumbers(int numberOfDices)
         {
-            int numberOfDices = 0;
-
-            while (numberOfDices < 3 || numberOfDices > 10)
-            {
-                Console.WriteLine("Ile kostek chcesz rzucić (3 - 10)");
-
-                if (int.TryParse(Console.ReadLine(), out int number))
-                {
-                    numberOfDices = number;
-                }
-                else
-                {
-                    continue;
-                }
-            }
-
             List<int> drawnDiceNumbers = new List<int>();
 
             Random random = new Random();
@@ -28,21 +19,83 @@
                 drawnDiceNumbers.Add(random.Next(1, 7));
             }
 
-            for (int i = 0; i < drawnDiceNumbers.Count; i++)
-            {
-                Console.WriteLine("Kostka " + (i+1) + ": " + drawnDiceNumbers[i]);
-            }
+            return drawnDiceNumbers;
+        }
 
+        static int CalculateScore(List<int> drawnDiceNumbers)
+        {
+            List<int> distinctDiceNumbers = drawnDiceNumbers.Distinct().ToList();
 
             int score = 0;
-            if(drawnDiceNumbers.Distinct().Count() < numberOfDices) 
+            foreach (int distinctDiceNumber in distinctDiceNumbers)
             {
-                foreach(int points  in drawnDiceNumbers) 
+                int numberOfOccurances = 0;
+                foreach (int drawnDiceNumber in drawnDiceNumbers)
                 {
-                    score += points;
+                    if (drawnDiceNumber == distinctDiceNumber)
+                    {
+                        numberOfOccurances++;
+                    }
+                }
+
+                if (numberOfOccurances > 1)
+                {
+                    score += numberOfOccurances * distinctDiceNumber;
                 }
             }
-            Console.WriteLine(score);
+
+            return score;
+        }
+        static void Main(string[] args)
+        {
+            bool playAgain = true;
+
+            while (playAgain == true)
+            {
+                int numberOfDices = 0;
+                while (numberOfDices < 3 || numberOfDices > 10)
+                {
+                    Console.WriteLine("Ile kostek chcesz rzucić (3 - 10)");
+
+                    if (int.TryParse(Console.ReadLine(), out int number))
+                    {
+                        numberOfDices = number;
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
+
+                List<int> drawnDiceNumbers = DrawNumbers(numberOfDices);
+
+                for (int i = 0; i < drawnDiceNumbers.Count; i++)
+                {
+                    Console.WriteLine("Kostka " + (i + 1) + ": " + drawnDiceNumbers[i]);
+                }
+
+                int score = CalculateScore(drawnDiceNumbers);
+
+                Console.WriteLine("Liczba uzyskanych punktów: " + score);
+
+                
+                var answer = String.Empty;
+                while(answer != "t" || answer != "n")
+                {
+
+                    Console.WriteLine("Jeszcze raz? (t/n)");
+                    answer = Console.ReadLine();
+
+                    if(answer == "t")
+                    {
+                        playAgain = true;
+                    }
+                    else
+                    {
+                        playAgain = false;
+                    }   
+                }
+            }
         }
     }
 }
